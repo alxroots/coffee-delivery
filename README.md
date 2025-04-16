@@ -22,12 +22,6 @@ This is a simple shopping cart application for a fictional coffee shop, built wi
 - Array methods like `reduce` for calculations
 - Form handling and data validation
 
-## 🎨 Layout
-
-The layout design was followed using a Figma model. You can duplicate and view it through the link below:
-
-🔗 [Figma Layout](https://www.figma.com/file/5yT9ZzZmRQRS4yivGGB3pl/Coffee-Delivery/duplicate)
-
 ## 📦 Getting Started
 
 ```bash
@@ -54,8 +48,8 @@ This project was created to practice core React concepts in a complete applicati
 
 ---
 
-Created by [Your Name]  
-[Your LinkedIn or personal website]
+Created by Alex Sousa  
+https://linkedin.com/in/alxsousa/
 
 ---
 
