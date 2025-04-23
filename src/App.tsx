@@ -4,6 +4,7 @@ import viteLogo from "/vite.svg";
 import { ThemeProvider } from "styled-components";
 import { defaultTheme } from "./styles/themes/default.ts";
 import { GlobalStyles } from "./styles/global.ts";
+import { IconButton } from "./components/button/IconButton.tsx";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -11,6 +12,11 @@ function App() {
   return (
     <ThemeProvider theme={defaultTheme}>
       <GlobalStyles />
+      <h1> Meu icon button</h1>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <IconButton />
+      </div>
+
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
