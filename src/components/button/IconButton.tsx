@@ -7,13 +7,19 @@ import { ShoppingCart } from "@phosphor-icons/react";
 interface IconButtonProps {
   icon?: ReactElement;
   variant?: "primary" | "secondary" | "icon";
+  onClick?: () => void;
 }
 
 export function IconButton({
   icon = <ShoppingCart weight="fill" />,
   variant = "icon",
+  onClick,
 }: IconButtonProps) {
-  return <StyledIconButton variant={variant}>{icon}</StyledIconButton>;
+  return (
+    <StyledIconButton onClick={onClick} variant={variant}>
+      {icon}
+    </StyledIconButton>
+  );
 }
 
 const StyledIconButton = styled.button<IconButtonProps>`
