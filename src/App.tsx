@@ -5,6 +5,7 @@ import { ThemeProvider } from "styled-components";
 import { defaultTheme } from "./styles/themes/default.ts";
 import { GlobalStyles } from "./styles/global.ts";
 import { IconButton } from "./components/button/IconButton.tsx";
+import { Button } from "./components/button/Button.tsx";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -15,6 +16,9 @@ function App() {
       <h1> Meu icon button</h1>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <IconButton />
+        <Button label="Remover" variant="primary" hasIcon={false} />
+
+        <Button label="Remover" variant="primary" hasIcon={true} />
       </div>
 
       <div>
