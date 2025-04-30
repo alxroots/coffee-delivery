@@ -23,7 +23,7 @@ export function IconButton({
 }
 
 const StyledIconButton = styled.button<IconButtonProps>`
-  border-radius: 8px;
+  border-radius: 6px;
   padding: 8px;
   ${({ theme, variant = "icon" }) => {
     const variantStyles = VARIANTS_BUTTONS_MAPPING(theme)[variant];
