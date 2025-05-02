@@ -39,7 +39,7 @@ export const defaultTheme = {
     tag: "0.625rem",
 
     buttonL: "0.875rem",
-    buttonM: "0.75rem",
+    buttonS: "0.75rem",
   },
   lineHeights: {
     base: 1.3,
