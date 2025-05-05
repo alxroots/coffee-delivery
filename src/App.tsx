@@ -9,6 +9,8 @@ import { Button } from "./components/button/Button.tsx";
 import { Cart } from "./components/cart/Cart.tsx";
 import { SelectPaymentType } from "./components/select/SelectPaymentType.tsx";
 import { Bank, CreditCard, Money } from "@phosphor-icons/react";
+import { InputText } from "./components/input/InputText.tsx";
+import { InputNumber } from "./components/input/InputNumber.tsx";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -65,6 +67,9 @@ function App() {
             onClick={() => handlePaymentTypeSelect(option.type)}
           />
         ))}
+        <InputText />
+        <InputText required={true} />
+        <InputNumber />
       </div>
 
       <div>
