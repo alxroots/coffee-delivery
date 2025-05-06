@@ -11,6 +11,9 @@ import { SelectPaymentType } from "./components/select/SelectPaymentType.tsx";
 import { Bank, CreditCard, Money } from "@phosphor-icons/react";
 import { InputText } from "./components/input/InputText.tsx";
 import { InputNumber } from "./components/input/InputNumber.tsx";
+import { FullBodyCard } from "./components/card/FullBodyCard.tsx";
+import cappuccinoImage from "./assets/capuccino.png";
+import { SmallBodyCard } from "./components/card/SmallBodyCard.tsx";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -70,6 +73,19 @@ function App() {
         <InputText />
         <InputText required={true} />
         <InputNumber />
+        <FullBodyCard
+          name="Cappuccino"
+          description="Bebida com canela feita de doses iguais de café, leite e espuma"
+          imageUrl={cappuccinoImage}
+          price={9.9}
+          tags={["Tradicional"]}
+        />
+        <SmallBodyCard
+          name="Capuccino"
+          imageUrl={cappuccinoImage}
+          price={9.9}
+          quantity={1}
+        />
       </div>
 
       <div>
