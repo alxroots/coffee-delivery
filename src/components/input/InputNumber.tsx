@@ -76,7 +76,7 @@ const StyledInput = styled.input`
   background: none;
   text-align: center;
   user-select: none;
-
+  width: 3ch;
   &:focus {
     outline: none;
   }

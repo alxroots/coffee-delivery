@@ -22,8 +22,8 @@ export const defaultTheme = {
     },
   },
   fonts: {
-    title: "Baloo 2, cursive",
-    text: "Roboto, sans-serif",
+    title: "'Baloo 2', cursive",
+    text: "'Roboto', sans-serif",
   },
   fontSizes: {
     titleXL: "3rem",

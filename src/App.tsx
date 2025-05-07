@@ -78,7 +78,7 @@ function App() {
           description="Bebida com canela feita de doses iguais de café, leite e espuma"
           imageUrl={cappuccinoImage}
           price={9.9}
-          tags={["Tradicional"]}
+          tags={["Tradicional", "Com Leite"]}
         />
         <SmallBodyCard
           name="Capuccino"
