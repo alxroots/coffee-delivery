@@ -36,7 +36,7 @@ export function Banner() {
 
 const BannerContainer = styled.div`
   width: 100%;
-  height: 544px;
+  min-height: 544px;
   background-image: url(${BackgroundBannerImage});
   background-size: cover;
   background-position: center;
@@ -54,7 +54,6 @@ const BannerWrapper = styled.div`
   justify-content: space-between;
 
   @media (max-width: 900px) {
-    margin-top: 264px;
     flex-direction: column;
     align-items: center;
     padding: 20px 16px;

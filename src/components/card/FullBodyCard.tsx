@@ -4,7 +4,8 @@ import { IconButton } from "../button/IconButton.tsx";
 import styled from "styled-components";
 import { formatCurrency } from "../../utils/conversions.ts";
 
-interface FullBodyCardProps {
+export interface FullBodyCardProps {
+  id: string;
   name: string;
   description: string;
   imageUrl: string;
