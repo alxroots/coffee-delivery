@@ -1,5 +1,7 @@
 import { Meta, type StoryObj } from "@storybook/react";
 import { SmallBodyCard } from "../../components/card/SmallBodyCard";
+import expressoImg from "../assets/expresso.png";
+import latteImg from "../assets/latte.png";
 
 const meta = {
   title: "Components/SmallBodyCard",
@@ -60,7 +62,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     name: "Expresso Tradicional",
-    imageUrl: "../assets/expresso.png",
+    imageUrl: expressoImg,
     price: 9.9,
     quantity: 1,
   },
@@ -69,7 +71,7 @@ export const Default: Story = {
 export const MultipleItems: Story = {
   args: {
     name: "Latte",
-    imageUrl: "../assets/latte.png",
+    imageUrl: latteImg,
     price: 12.5,
     quantity: 3,
   },
