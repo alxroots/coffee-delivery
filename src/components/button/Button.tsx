@@ -48,7 +48,7 @@ const StyledButton = styled.button<{
       background: ${_has_icon ? theme.colors.base.button : variantStyles.background};
       color: ${_has_icon ? theme.colors.base.text : variantStyles.text};
       border-radius: 8px;
-      width: ${_has_icon ? "auto" : "132px"};
+      width: ${_has_icon ? "auto" : "100%"};
       height: ${_has_icon ? "auto" : "46px"};
       font-weight: ${_has_icon ? 400 : 700};
       font-size: ${_has_icon ? "12px" : "14px"};

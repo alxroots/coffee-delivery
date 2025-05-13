@@ -16,7 +16,7 @@ export function SelectPaymentType({
 }: PaymentTypeSelectProps) {
   return (
     <PaymentTypeSelectWrapper $isSelected={isSelected} onClick={onClick}>
-      <Icon />
+      <Icon size={22} />
       <span>{label}</span>
     </PaymentTypeSelectWrapper>
   );

@@ -16,19 +16,22 @@ export function SmallBodyCard(props: SmallBodyCardProps) {
   };
 
   return (
-    <Card>
-      <CardImage src={props.imageUrl} alt={props.name} />
-      <CardBody>
-        <HeadingWrapper>
-          <CardTitle>{props.name}</CardTitle>
-          <CardPrice>{handleValueConversion(props.price)}</CardPrice>
-        </HeadingWrapper>
-        <ControllerWrapper>
-          <InputNumber min={1} initialValue={props.quantity} />
-          <Button variant="secondary" hasIcon={true} />
-        </ControllerWrapper>
-      </CardBody>
-    </Card>
+    <>
+      <Card>
+        <CardImage src={props.imageUrl} alt={props.name} />
+        <CardBody>
+          <HeadingWrapper>
+            <CardTitle>{props.name}</CardTitle>
+            <CardPrice>{handleValueConversion(props.price)}</CardPrice>
+          </HeadingWrapper>
+          <ControllerWrapper>
+            <InputNumber min={1} initialValue={props.quantity} />
+            <Button variant="secondary" hasIcon={true} />
+          </ControllerWrapper>
+        </CardBody>
+      </Card>
+      <Divider />
+    </>
   );
 }
 
@@ -69,4 +72,12 @@ const ControllerWrapper = styled.div`
   gap: 8px;
   align-items: center;
   margin-top: 8px;
+`;
+
+const Divider = styled.hr`
+  height: 1px;
+  opacity: 0.3;
+  transform: scaleY(0.5);
+  background-color: ${({ theme }) => theme.colors.base.button};
+  margin: 12px 0;
 `;

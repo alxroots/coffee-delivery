@@ -162,3 +162,22 @@ export const coffeeDrinks: FullBodyCardProps[] = [
     tags: ["Especial", "Alcoólico"],
   },
 ];
+
+export const smallSampleCheckoutCoffeeDrinks = [
+  {
+    id: "arabe",
+    name: "Árabe",
+    description: "Café expresso com cardamomo, especiaria árabe",
+    price: 9.9,
+    imageUrl: arabe,
+    tags: ["Especial"],
+  },
+  {
+    id: "irlandes",
+    name: "Irlandês",
+    description: "Café expresso misturado com uísque, creme de leite e açúcar",
+    price: 9.9,
+    imageUrl: irish,
+    tags: ["Especial", "Alcoólico"],
+  },
+];
