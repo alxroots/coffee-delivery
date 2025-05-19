@@ -18,7 +18,7 @@ export function Banner() {
           <ServiceList>
             {services.map((service) => (
               <ServiceItem key={service.id}>
-                <ServiceIcon _bgColor={service.bgColor}>
+                <ServiceIcon $bgColor={service.bgColor}>
                   <service.Icon size={16} weight="fill" color={"#fafafa"} />
                 </ServiceIcon>
                 <ServiceText>{service.description}</ServiceText>
@@ -99,11 +99,11 @@ const ServiceItem = styled.li`
   margin-top: 10px;
 `;
 
-const ServiceIcon = styled.div<{ _bgColor?: string }>`
+const ServiceIcon = styled.div<{ $bgColor?: string }>`
   margin-right: 10px;
   width: 32px;
   height: 32px;
-  background-color: ${(props) => props._bgColor || "#333"};
+  background-color: ${(props) => props.$bgColor || "#333"};
   border-radius: 50%;
   display: flex;
   justify-content: center;

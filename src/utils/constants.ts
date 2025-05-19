@@ -1,0 +1,5 @@
+export const INPUT_DEFAULT_NUMBERS = {
+  INITIAL_VALUE: 0,
+  MIN_VALUE: 0,
+  MAX_VALUE: 99,
+};
