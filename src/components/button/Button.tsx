@@ -19,47 +19,47 @@ export function Button({
 }: ButtonProps) {
   if (hasIcon) {
     return (
-      <StyledButton _variant={variant} _has_icon={hasIcon}>
+      <StyledButton $variant={variant} $has_icon={hasIcon}>
         {icon}
         {label}
       </StyledButton>
     );
   }
   return (
-    <StyledButton _variant={variant} _has_icon={hasIcon}>
+    <StyledButton $variant={variant} $has_icon={hasIcon}>
       {label}
     </StyledButton>
   );
 }
 
 const StyledButton = styled.button<{
-  _has_icon: boolean;
-  _variant: "primary" | "secondary";
+  $has_icon: boolean;
+  $variant: "primary" | "secondary";
 }>`
   display: flex;
   align-items: center;
   justify-content: center;
   text-transform: uppercase;
 
-  ${({ theme, _variant, _has_icon }) => {
-    const variantStyles = VARIANTS_BUTTONS_MAPPING(theme)[_variant];
+  ${({ theme, $variant, $has_icon }) => {
+    const variantStyles = VARIANTS_BUTTONS_MAPPING(theme)[$variant];
 
     return `
-      background: ${_has_icon ? theme.colors.base.button : variantStyles.background};
-      color: ${_has_icon ? theme.colors.base.text : variantStyles.text};
+      background: ${$has_icon ? theme.colors.base.button : variantStyles.background};
+      color: ${$has_icon ? theme.colors.base.text : variantStyles.text};
       border-radius: 8px;
-      width: ${_has_icon ? "auto" : "100%"};
-      height: ${_has_icon ? "auto" : "46px"};
-      font-weight: ${_has_icon ? 400 : 700};
-      font-size: ${_has_icon ? "12px" : "14px"};
-      padding: ${_has_icon ? "8px" : "8px 12px"};
+      width: ${$has_icon ? "auto" : "100%"};
+      height: ${$has_icon ? "auto" : "46px"};
+      font-weight: ${$has_icon ? 400 : 700};
+      font-size: ${$has_icon ? "12px" : "14px"};
+      padding: ${$has_icon ? "8px" : "8px 12px"};
       border: none;
       cursor: pointer;
       svg {
-        margin-right: ${_has_icon ? "4px" : "auto"};
+        margin-right: ${$has_icon ? "4px" : "auto"};
       }
       &:hover {
-        background: ${_has_icon ? theme.colors.base.hover : variantStyles.hover};
+        background: ${$has_icon ? theme.colors.base.hover : variantStyles.hover};
         svg {
           color: ${theme.colors.product.purpleDark};
         }

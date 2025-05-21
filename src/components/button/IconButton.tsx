@@ -3,26 +3,29 @@ import styled from "styled-components";
 import { VARIANTS_BUTTONS_MAPPING } from "../../utils/mappings.ts";
 
 import { ShoppingCart } from "@phosphor-icons/react";
+import { Link } from "react-router-dom";
 
 interface IconButtonProps {
   icon?: ReactElement;
   variant?: "primary" | "secondary" | "icon";
   onClick?: () => void;
+  linkTo?: string;
 }
 
 export function IconButton({
   icon = <ShoppingCart weight="fill" />,
   variant = "icon",
   onClick,
+  linkTo = "checkout",
 }: IconButtonProps) {
   return (
-    <StyledIconButton onClick={onClick} variant={variant}>
+    <StyledIconButton onClick={onClick} to={linkTo} variant={variant}>
       {icon}
     </StyledIconButton>
   );
 }
 
-const StyledIconButton = styled.button<IconButtonProps>`
+const StyledIconButton = styled(Link)<IconButtonProps>`
   border-radius: 6px;
   padding: 8px;
   ${({ theme, variant = "icon" }) => {

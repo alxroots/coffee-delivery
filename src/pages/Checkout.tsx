@@ -10,9 +10,17 @@ import { SelectPaymentType } from "../components/select/SelectPaymentType.tsx";
 import { SmallBodyCard } from "../components/card/SmallBodyCard.tsx";
 import { Button } from "../components/button/Button.tsx";
 import styled from "styled-components";
-import { smallSampleCheckoutCoffeeDrinks } from "../utils/content.ts";
+import { useCoffeeStore } from "../stores/useCoffeeStore.ts";
+import { FullBodyCardProps } from "../components/card/FullBodyCard.tsx";
+import { formatCurrency } from "../utils/conversions.ts";
 
 export default function Checkout() {
+  const { listCoffees, totalValue, totalWithDelivery } = useCoffeeStore();
+  const { currency, formattedValue } = formatCurrency(totalValue());
+  const {
+    currency: currencyWithDelivery,
+    formattedValue: formattedValueWithDelivery,
+  } = formatCurrency(totalWithDelivery());
   return (
     <CheckoutContainer>
       <PaymentFormSide>
@@ -38,7 +46,7 @@ export default function Checkout() {
                 required
                 style={{ minWidth: "200px" }}
               />
-              <InputText label="Complemento" fullWidth />
+              <InputText label="Complemento" fullwidth />
             </Row>
             <Row>
               <InputText
@@ -93,20 +101,22 @@ export default function Checkout() {
         </SectionTitle>
         <SummaryWrapper>
           <DisplayItems>
-            {smallSampleCheckoutCoffeeDrinks.map((coffee) => (
+            {listCoffees.map((coffee: FullBodyCardProps) => (
               <SmallBodyCard
                 key={coffee.id}
                 name={coffee.name}
                 imageUrl={coffee.imageUrl}
                 price={coffee.price}
-                quantity={1}
+                quantity={coffee.quantity!}
               />
             ))}
           </DisplayItems>
           <SummaryFooter>
             <SummaryItem>
               <p>Total de itens</p>
-              <span>R$ 29,70</span>
+              <span>
+                {currency} {formattedValue}
+              </span>
             </SummaryItem>
             <SummaryItem>
               <p>Entrega</p>
@@ -114,7 +124,9 @@ export default function Checkout() {
             </SummaryItem>
             <SummaryItem>
               <strong>Total</strong>
-              <strong>R$ 33,20</strong>
+              <strong>
+                {currencyWithDelivery} {formattedValueWithDelivery}
+              </strong>
             </SummaryItem>
           </SummaryFooter>
           <Button variant="primary" label="Confirmar Pedido" hasIcon={false} />

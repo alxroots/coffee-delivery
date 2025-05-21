@@ -3,7 +3,7 @@ import { InputNumber } from "../input/InputNumber.tsx";
 import { IconButton } from "../button/IconButton.tsx";
 import styled from "styled-components";
 import { formatCurrency } from "../../utils/conversions.ts";
-import { useAppContext } from "../../providers/app-context.ts";
+import { useCoffeeStore } from "../../stores/useCoffeeStore.ts";
 
 export interface FullBodyCardProps {
   id: string;
@@ -12,14 +12,23 @@ export interface FullBodyCardProps {
   imageUrl: string;
   price: number;
   tags: CoffeeTagType[];
-  quantity?: number;
+  quantity: number;
 }
 
 export function FullBodyCard(props: FullBodyCardProps) {
   const { formattedValue, currency } = formatCurrency(props.price);
-  const { handleUpdateListCoffee, listCoffees } = useAppContext();
-  const handleGetTotalCoffee = (total: number) => {
-    handleUpdateListCoffee(props.id, total);
+  const { addOrUpdateCoffeeList } = useCoffeeStore();
+  const handleAddOrUpdateCoffeeList = (quantity: number) => {
+    const coffeeItem = {
+      id: props.id,
+      name: props.name,
+      description: props.description,
+      imageUrl: props.imageUrl,
+      price: props.price,
+      tags: props.tags,
+      quantity,
+    };
+    addOrUpdateCoffeeList(props.id, coffeeItem);
   };
 
   return (
@@ -40,10 +49,8 @@ export function FullBodyCard(props: FullBodyCardProps) {
           <span>{formattedValue}</span>
         </PriceWrapper>
         <ControllerWrapper>
-          <InputNumber onChange={handleGetTotalCoffee} />
-          <IconButton
-            onClick={() => console.log("sent to cart", listCoffees)}
-          />
+          <InputNumber onChange={handleAddOrUpdateCoffeeList} />
+          <IconButton />
         </ControllerWrapper>
       </CardFooter>
     </Card>
