@@ -15,12 +15,13 @@ import { FullBodyCardProps } from "../components/card/FullBodyCard.tsx";
 import { formatCurrency } from "../utils/conversions.ts";
 
 export default function Checkout() {
-  const { listCoffees, totalValue, totalWithDelivery } = useCoffeeStore();
+  const { coffeeListInCart, totalValue, totalWithDelivery } = useCoffeeStore();
   const { currency, formattedValue } = formatCurrency(totalValue());
   const {
     currency: currencyWithDelivery,
     formattedValue: formattedValueWithDelivery,
   } = formatCurrency(totalWithDelivery());
+
   return (
     <CheckoutContainer>
       <PaymentFormSide>
@@ -101,13 +102,16 @@ export default function Checkout() {
         </SectionTitle>
         <SummaryWrapper>
           <DisplayItems>
-            {listCoffees.map((coffee: FullBodyCardProps) => (
+            {coffeeListInCart.map((coffee: FullBodyCardProps) => (
               <SmallBodyCard
                 key={coffee.id}
                 name={coffee.name}
                 imageUrl={coffee.imageUrl}
                 price={coffee.price}
                 quantity={coffee.quantity!}
+                tags={coffee.tags}
+                id={coffee.id}
+                description={coffee.description}
               />
             ))}
           </DisplayItems>

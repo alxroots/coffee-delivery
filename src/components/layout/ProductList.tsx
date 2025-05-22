@@ -16,6 +16,7 @@ export function ProductList() {
             imageUrl={coffee.imageUrl}
             price={coffee.price}
             tags={coffee.tags}
+            quantity={coffee.quantity}
           />
         ))}
       </ListWrapper>

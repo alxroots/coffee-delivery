@@ -2,17 +2,28 @@ import { InputNumber } from "../input/InputNumber.tsx";
 import { Button } from "../button/Button.tsx";
 import styled from "styled-components";
 import { formatCurrencyDefault } from "../../utils/conversions.ts";
+import { useCoffeeStore } from "../../stores/useCoffeeStore.ts";
+import { FullBodyCardProps } from "./FullBodyCard.tsx";
 
-export interface SmallBodyCardProps {
-  name: string;
-  imageUrl: string;
-  price: number;
-  quantity: number;
-}
-
-export function SmallBodyCard(props: SmallBodyCardProps) {
+export function SmallBodyCard(props: FullBodyCardProps) {
+  const {
+    addOrUpdateCoffeeListView,
+    addOrUpdateCoffeeListInCart,
+    removeCoffeeFromCart,
+    getCoffeeQuantity,
+  } = useCoffeeStore();
+  const currentQuantity = getCoffeeQuantity(props.id);
   const handleValueConversion = (value: number) => {
     return formatCurrencyDefault(value);
+  };
+
+  const handleUpdateQuantityChange = (newQuantity: number) => {
+    addOrUpdateCoffeeListInCart({ ...props, quantity: newQuantity });
+    addOrUpdateCoffeeListView({ ...props, quantity: newQuantity });
+  };
+
+  const handleRemoveCoffeeFromCart = () => {
+    removeCoffeeFromCart(props.id);
   };
 
   return (
@@ -25,8 +36,16 @@ export function SmallBodyCard(props: SmallBodyCardProps) {
             <CardPrice>{handleValueConversion(props.price)}</CardPrice>
           </HeadingWrapper>
           <ControllerWrapper>
-            <InputNumber min={1} initialValue={props.quantity} />
-            <Button variant="secondary" hasIcon={true} />
+            <InputNumber
+              min={1}
+              value={currentQuantity}
+              onChange={handleUpdateQuantityChange}
+            />
+            <Button
+              variant="secondary"
+              hasIcon={true}
+              onClick={handleRemoveCoffeeFromCart}
+            />
           </ControllerWrapper>
         </CardBody>
       </Card>

@@ -1,39 +1,34 @@
 import styled from "styled-components";
 import { Minus, Plus } from "@phosphor-icons/react";
-import { useState } from "react";
 
 interface InputNumberProps {
-  initialValue?: number;
+  value: number;
   min?: number;
   max?: number;
   onChange?: (quantity: number) => void;
+  isLocked?: boolean;
 }
 
 export function InputNumber({
-  initialValue = 0,
+  value,
   min = 0,
   max = Infinity,
   onChange,
+  isLocked = false,
 }: InputNumberProps) {
-  const [value, setValue] = useState(initialValue);
-
   const handleIncrement = () => {
     if (value < max) {
-      const newValue = value + 1;
-      setValue(newValue);
-      onChange?.(newValue);
+      onChange?.(value + 1);
     }
   };
   const handleDecrement = () => {
     if (value > min) {
-      const newValue = value - 1;
-      setValue(newValue);
-      onChange?.(newValue);
+      onChange?.(value - 1);
     }
   };
 
   return (
-    <InputWrapper>
+    <InputWrapper $islocked={isLocked}>
       <button type="button" onClick={handleDecrement}>
         <Minus />
       </button>
@@ -52,12 +47,16 @@ export function InputNumber({
   );
 }
 
-const InputWrapper = styled.div`
+const InputWrapper = styled.div<{ $islocked: boolean }>`
   display: flex;
   align-items: center;
   padding: 8px;
   background-color: ${({ theme }) => theme.colors.base.button};
   border-radius: 6px;
+  opacity: ${({ $islocked }) => ($islocked ? 0.5 : 1)};
+  cursor: ${({ $islocked }) => ($islocked ? "not-allowed" : "pointer")};
+  pointer-events: ${({ $islocked }) => ($islocked ? "none" : "auto")};
+
   button {
     display: flex;
     align-items: center;

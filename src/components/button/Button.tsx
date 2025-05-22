@@ -15,18 +15,19 @@ export function Button({
   label = "Remover",
   variant,
   hasIcon,
+  onClick,
   icon = <Trash />,
 }: ButtonProps) {
   if (hasIcon) {
     return (
-      <StyledButton $variant={variant} $has_icon={hasIcon}>
+      <StyledButton $variant={variant} $has_icon={hasIcon} onClick={onClick}>
         {icon}
         {label}
       </StyledButton>
     );
   }
   return (
-    <StyledButton $variant={variant} $has_icon={hasIcon}>
+    <StyledButton $variant={variant} $has_icon={hasIcon} onClick={onClick}>
       {label}
     </StyledButton>
   );

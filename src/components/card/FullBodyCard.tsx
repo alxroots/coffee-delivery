@@ -4,6 +4,8 @@ import { IconButton } from "../button/IconButton.tsx";
 import styled from "styled-components";
 import { formatCurrency } from "../../utils/conversions.ts";
 import { useCoffeeStore } from "../../stores/useCoffeeStore.ts";
+import toast from "react-hot-toast";
+import { useState } from "react";
 
 export interface FullBodyCardProps {
   id: string;
@@ -16,25 +18,37 @@ export interface FullBodyCardProps {
 }
 
 export function FullBodyCard(props: FullBodyCardProps) {
+  const {
+    addOrUpdateCoffeeListView,
+    addOrUpdateCoffeeListInCart,
+    getCoffeeQuantity,
+  } = useCoffeeStore();
+  const currentQuantity = getCoffeeQuantity(props.id);
+  const [isLocked, setIsLocked] = useState(false);
+
   const { formattedValue, currency } = formatCurrency(props.price);
-  const { addOrUpdateCoffeeList } = useCoffeeStore();
-  const handleAddOrUpdateCoffeeList = (quantity: number) => {
-    const coffeeItem = {
-      id: props.id,
-      name: props.name,
-      description: props.description,
-      imageUrl: props.imageUrl,
-      price: props.price,
-      tags: props.tags,
-      quantity,
-    };
-    addOrUpdateCoffeeList(props.id, coffeeItem);
+
+  const handleUpdateQuantityChange = (newQuantity: number) => {
+    addOrUpdateCoffeeListView({ ...props, quantity: newQuantity });
+  };
+
+  const handleAddToCart = () => {
+    if (currentQuantity === 0) {
+      toast.error("Adicione uma quantidade maior que zero");
+      return;
+    } else if (currentQuantity > 0 && !isLocked) {
+      addOrUpdateCoffeeListInCart({ ...props, quantity: currentQuantity });
+      toast.success("Adicionado ao carrinho");
+      setIsLocked(true);
+    } else {
+      setIsLocked(false);
+    }
   };
 
   return (
     <Card>
       <CardHeader>
-        <CardImage src={props.imageUrl} alt={props.name} />
+        <CardImage src={props.imageUrl} alt={props.name} $islocked={isLocked} />
         <TagWrapper>
           {props.tags?.map((tag: CoffeeTagType) => <span>{tag}</span>)}
         </TagWrapper>
@@ -49,8 +63,12 @@ export function FullBodyCard(props: FullBodyCardProps) {
           <span>{formattedValue}</span>
         </PriceWrapper>
         <ControllerWrapper>
-          <InputNumber onChange={handleAddOrUpdateCoffeeList} />
-          <IconButton />
+          <InputNumber
+            value={currentQuantity}
+            onChange={handleUpdateQuantityChange}
+            isLocked={isLocked}
+          />
+          <IconButton variant="icon" onClick={handleAddToCart} />
         </ControllerWrapper>
       </CardFooter>
     </Card>
@@ -108,10 +126,11 @@ const CardDescription = styled.p`
   color: ${({ theme }) => theme.colors.base.label};
 `;
 
-const CardImage = styled.img`
+const CardImage = styled.img<{ $islocked: boolean }>`
   width: 120px;
   height: 120px;
   margin-top: -40px;
+  opacity: ${({ $islocked }) => ($islocked ? 0.5 : 1)};
 `;
 const CardFooter = styled.footer`
   display: flex;

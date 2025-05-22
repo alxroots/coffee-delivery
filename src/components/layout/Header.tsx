@@ -2,12 +2,18 @@ import { Cart } from "../cart/Cart.tsx";
 import { MapPin } from "@phosphor-icons/react";
 import styled from "styled-components";
 import Logo from "../../assets/Logo.png";
+import { useCoffeeStore } from "../../stores/useCoffeeStore.ts";
+import { Link } from "react-router-dom";
 
 export function Header() {
+  const { getTotalItemsInCart } = useCoffeeStore();
+
   return (
     <HeaderWrapper>
       <LogoWrapper>
-        <img src={Logo} alt="Logo Coffee Delivery" />
+        <Link to="/">
+          <img src={Logo} alt="Logo Coffee Delivery" />
+        </Link>
       </LogoWrapper>
       <NavbarWrapper>
         <LocationContainer>
@@ -15,7 +21,7 @@ export function Header() {
           <span>Porto Alegre, RS</span>
         </LocationContainer>
         <NavBarActions>
-          <Cart count={undefined} />
+          <Cart count={getTotalItemsInCart()} />
         </NavBarActions>
       </NavbarWrapper>
     </HeaderWrapper>

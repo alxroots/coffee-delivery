@@ -3,43 +3,121 @@ import { persist } from "zustand/middleware";
 import { FullBodyCardProps } from "../components/card/FullBodyCard.tsx";
 
 interface CoffeeStoreProps {
-  listCoffees: FullBodyCardProps[];
+  coffeeListView: FullBodyCardProps[];
+  coffeeListInCart: FullBodyCardProps[];
+
   totalValue: () => number;
   totalWithDelivery: () => number;
-  addOrUpdateCoffeeList: (id: string, coffeeItem: FullBodyCardProps) => void;
+  getCoffeeQuantity: (id: string) => number;
+  getTotalItemsInCart: () => number;
+  addOrUpdateCoffeeListView: (coffee: FullBodyCardProps) => void;
+  addOrUpdateCoffeeListInCart: (coffee: FullBodyCardProps) => void;
+  removeCoffeeFromCart: (id: string) => void;
 }
 
 export const useCoffeeStore = create<CoffeeStoreProps>()(
   persist(
     (set, get) => ({
-      listCoffees: [],
+      coffeeListView: [],
+      coffeeListInCart: [],
+
       totalValue: () => {
-        const currentList = get().listCoffees;
-        return currentList.reduce((acc, coffee) => {
-          return acc + coffee.price * (coffee.quantity || 0);
-        }, 0);
+        const { coffeeListInCart } = get();
+        return coffeeListInCart.reduce(
+          (acc, coffee) => acc + coffee.price * (coffee.quantity || 0),
+          0,
+        );
       },
+
       totalWithDelivery: () => {
-        const deliveryFee = 3.5;
-        const total = get().totalValue();
-        return total + deliveryFee;
-      },
-      addOrUpdateCoffeeList: (id: string, coffeeItem: FullBodyCardProps) => {
-        const currentList = get().listCoffees;
-        const coffeeIndex = currentList.findIndex((coffee) => coffee.id === id);
-        if (coffeeIndex !== -1) {
-          const updatedCoffees = [...currentList];
-          updatedCoffees[coffeeIndex].quantity = coffeeItem.quantity;
-          updatedCoffees[coffeeIndex].price =
-            coffeeItem.price * coffeeItem.quantity;
-          set({ listCoffees: updatedCoffees });
-          console.log("price", updatedCoffees[coffeeIndex].price);
+        if (get().coffeeListInCart.length === 0) {
+          return 0;
         } else {
-          const newCoffee = {
-            ...coffeeItem,
-          } as FullBodyCardProps;
-          set({ listCoffees: [...currentList, newCoffee] });
+          return get().totalValue() + 3.5;
         }
+      },
+
+      getCoffeeQuantity: (id: string) => {
+        const item = get().coffeeListView.find((c) => c.id === id);
+        return item?.quantity ?? 0;
+      },
+
+      getTotalItemsInCart: () => {
+        const { coffeeListInCart } = get();
+        return coffeeListInCart.reduce(
+          (acc, coffee) => acc + (coffee.quantity || 0),
+          0,
+        );
+      },
+
+      addOrUpdateCoffeeListView: (coffeeItem: FullBodyCardProps) => {
+        const { coffeeListView } = get();
+
+        if (coffeeItem.quantity === 0) {
+          set({
+            coffeeListView: coffeeListView.filter(
+              (c) => c.id !== coffeeItem.id,
+            ),
+          });
+          return;
+        }
+
+        const index = coffeeListView.findIndex((c) => c.id === coffeeItem.id);
+
+        if (index !== -1) {
+          const updated = [...coffeeListView];
+          updated[index] = {
+            ...updated[index],
+            ...coffeeItem,
+            quantity: coffeeItem.quantity ?? updated[index].quantity,
+          };
+          set({ coffeeListView: updated });
+        } else {
+          set({
+            coffeeListView: [
+              ...coffeeListView,
+              { ...coffeeItem, quantity: coffeeItem.quantity ?? 1 },
+            ],
+          });
+        }
+      },
+
+      addOrUpdateCoffeeListInCart: (coffeeItem: FullBodyCardProps) => {
+        const { coffeeListInCart } = get();
+
+        if (coffeeItem.quantity === 0) {
+          set({
+            coffeeListInCart: coffeeListInCart.filter(
+              (c) => c.id !== coffeeItem.id,
+            ),
+          });
+          return;
+        }
+
+        const index = coffeeListInCart.findIndex((c) => c.id === coffeeItem.id);
+
+        if (index !== -1) {
+          const updated = [...coffeeListInCart];
+          updated[index] = {
+            ...updated[index],
+            ...coffeeItem,
+            quantity: coffeeItem.quantity ?? updated[index].quantity,
+          };
+          set({ coffeeListInCart: updated });
+        } else {
+          set({
+            coffeeListInCart: [
+              ...coffeeListInCart,
+              { ...coffeeItem, quantity: coffeeItem.quantity ?? 1 },
+            ],
+          });
+        }
+      },
+
+      removeCoffeeFromCart: (id) => {
+        const cart = get().coffeeListInCart.filter((c) => c.id !== id);
+        set({ coffeeListInCart: cart });
+        set({ coffeeListView: cart });
       },
     }),
     { name: "coffee-store" },
