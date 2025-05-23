@@ -1,13 +1,16 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { FullBodyCardProps } from "../components/card/FullBodyCard.tsx";
+import { CheckoutFormDataPropTypes } from "../@types/form";
 
 interface CoffeeStoreProps {
   coffeeListView: FullBodyCardProps[];
   coffeeListInCart: FullBodyCardProps[];
-
+  addressData: CheckoutFormDataPropTypes;
+  setAddressData: (data: CheckoutFormDataPropTypes) => void;
   totalValue: () => number;
   totalWithDelivery: () => number;
+  resetCoffeeLists: () => void;
   getCoffeeQuantity: (id: string) => number;
   getTotalItemsInCart: () => number;
   addOrUpdateCoffeeListView: (coffee: FullBodyCardProps) => void;
@@ -20,13 +23,29 @@ export const useCoffeeStore = create<CoffeeStoreProps>()(
     (set, get) => ({
       coffeeListView: [],
       coffeeListInCart: [],
-
+      addressData: {
+        code: "",
+        address: "",
+        number: "",
+        complement: "",
+        address2: "",
+        city: "",
+        state: "",
+        paymentMethod: "credit",
+      },
+      setAddressData: (data: CheckoutFormDataPropTypes) => {
+        set({ addressData: data });
+      },
       totalValue: () => {
         const { coffeeListInCart } = get();
         return coffeeListInCart.reduce(
           (acc, coffee) => acc + coffee.price * (coffee.quantity || 0),
           0,
         );
+      },
+
+      resetCoffeeLists: () => {
+        set({ coffeeListView: [], coffeeListInCart: [] });
       },
 
       totalWithDelivery: () => {

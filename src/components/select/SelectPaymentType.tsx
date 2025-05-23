@@ -17,7 +17,7 @@ export function SelectPaymentType({
   return (
     <PaymentTypeSelectWrapper $isSelected={isSelected} onClick={onClick}>
       <Icon size={22} />
-      <span>{label}</span>
+      <p>{label}</p>
     </PaymentTypeSelectWrapper>
   );
 }

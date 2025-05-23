@@ -50,7 +50,9 @@ export function FullBodyCard(props: FullBodyCardProps) {
       <CardHeader>
         <CardImage src={props.imageUrl} alt={props.name} $islocked={isLocked} />
         <TagWrapper>
-          {props.tags?.map((tag: CoffeeTagType) => <span>{tag}</span>)}
+          {props.tags?.map((tag: CoffeeTagType) => (
+            <span key={tag}>{tag}</span>
+          ))}
         </TagWrapper>
       </CardHeader>
       <CardBody>

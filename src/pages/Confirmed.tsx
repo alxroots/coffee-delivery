@@ -1,8 +1,16 @@
 import ConfirmedImage from "../assets/confirmed.svg";
 import styled from "styled-components";
 import { CurrencyDollar, MapPin, Timer } from "@phosphor-icons/react";
+import { useCoffeeStore } from "../stores/useCoffeeStore.ts";
 
 export default function Confirmed() {
+  const { addressData } = useCoffeeStore();
+  const mapPaymentMethod = {
+    credit: "Cartão de Crédito",
+    debit: "Cartão de Débito",
+    cash: "Dinheiro",
+  };
+  const paymentMethod = mapPaymentMethod[addressData.paymentMethod];
   return (
     <Container>
       <ContentWrapper>
@@ -15,9 +23,11 @@ export default function Confirmed() {
                 <MapPin weight="fill" />
               </WrapperIcon>
               <p>
-                Entrega em <strong>Rua João Daniel Martinelli, 102</strong>
+                Entrega em <strong>{addressData.address}</strong>
               </p>
-              <span>Farrapos - Porto Alegre, RS</span>
+              <span>
+                {addressData.address2} - {addressData.city}
+              </span>
             </ListItemWrapper>
             <ListItemWrapper>
               <WrapperIcon $color="yellow">
@@ -31,7 +41,7 @@ export default function Confirmed() {
                 <CurrencyDollar />
               </WrapperIcon>
               <p>Pagamento na entrega</p>
-              <strong>Cartão de Crédito</strong>
+              <strong>{paymentMethod}</strong>
             </ListItemWrapper>
           </div>
         </StepsWrapper>

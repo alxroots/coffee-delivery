@@ -5,6 +5,8 @@ import {
   MapPin,
   Money,
 } from "@phosphor-icons/react";
+import { useForm, Controller } from "react-hook-form";
+
 import { InputText } from "../components/input/InputText.tsx";
 import { SelectPaymentType } from "../components/select/SelectPaymentType.tsx";
 import { SmallBodyCard } from "../components/card/SmallBodyCard.tsx";
@@ -13,18 +15,41 @@ import styled from "styled-components";
 import { useCoffeeStore } from "../stores/useCoffeeStore.ts";
 import { FullBodyCardProps } from "../components/card/FullBodyCard.tsx";
 import { formatCurrency } from "../utils/conversions.ts";
+import { CheckoutFormDataPropTypes } from "../@types/form";
+import { useNavigate } from "react-router-dom";
 
 export default function Checkout() {
-  const { coffeeListInCart, totalValue, totalWithDelivery } = useCoffeeStore();
+  const {
+    coffeeListInCart,
+    totalValue,
+    totalWithDelivery,
+    resetCoffeeLists,
+    setAddressData,
+  } = useCoffeeStore();
+  const navigate = useNavigate();
+  const { control, handleSubmit } = useForm<CheckoutFormDataPropTypes>({
+    mode: "onChange",
+  });
+
   const { currency, formattedValue } = formatCurrency(totalValue());
   const {
     currency: currencyWithDelivery,
     formattedValue: formattedValueWithDelivery,
   } = formatCurrency(totalWithDelivery());
 
+  const onSubmit = (data: CheckoutFormDataPropTypes) => {
+    setAddressData(data);
+    resetCoffeeLists();
+    navigate("/confirmed");
+  };
+
   return (
     <CheckoutContainer>
-      <PaymentFormSide>
+      <PaymentFormSide
+        id="checkout-form"
+        onSubmit={handleSubmit(onSubmit)}
+        noValidate
+      >
         <SectionTitle>
           <h1>Complete seu pedido</h1>
         </SectionTitle>
@@ -38,29 +63,118 @@ export default function Checkout() {
           </Title>
           <AddressArea>
             <Row>
-              <InputText label="CEP" required style={{ minWidth: "200px" }} />
+              <Controller
+                name="code"
+                control={control}
+                rules={{ required: "CEP é um campo obrigatório" }}
+                render={({ field, fieldState }) => (
+                  <InputWrapper hasError={!!fieldState.error}>
+                    <InputText
+                      label="CEP"
+                      required
+                      style={{ minWidth: "200px" }}
+                      {...field}
+                    />
+                    {fieldState.error && (
+                      <span>{fieldState.error.message}</span>
+                    )}
+                  </InputWrapper>
+                )}
+              />
             </Row>
-            <InputText label="Rua" required />
+            <Controller
+              name="address"
+              control={control}
+              rules={{ required: "Rua é um campo obrigatório" }}
+              render={({ field, fieldState }) => (
+                <InputWrapper>
+                  <InputText label="Rua" required {...field} />
+                  {fieldState.error && <span>{fieldState.error.message}</span>}
+                </InputWrapper>
+              )}
+            />
             <Row>
-              <InputText
-                label="Número"
-                required
-                style={{ minWidth: "200px" }}
+              <Controller
+                name="number"
+                control={control}
+                rules={{ required: "Número é um campo obrigatório" }}
+                render={({ field, fieldState }) => (
+                  <InputWrapper>
+                    <InputText
+                      label="Número"
+                      required
+                      style={{ minWidth: "200px" }}
+                      {...field}
+                    />
+                    {fieldState.error && (
+                      <span>{fieldState.error.message}</span>
+                    )}
+                  </InputWrapper>
+                )}
               />
-              <InputText label="Complemento" fullwidth />
+              <Controller
+                name="complement"
+                control={control}
+                render={({ field }) => (
+                  <InputText label="Complemento" fullwidth {...field} />
+                )}
+              />
             </Row>
             <Row>
-              <InputText
-                label="Bairro"
-                required
-                style={{ minWidth: "200px" }}
+              <Controller
+                name="address2"
+                control={control}
+                rules={{ required: "Bairro é um campo obrigatório" }}
+                render={({ field, fieldState }) => (
+                  <InputWrapper>
+                    <InputText
+                      label="Bairro"
+                      required
+                      style={{ minWidth: "200px" }}
+                      {...field}
+                    />
+                    {fieldState.error && (
+                      <span>{fieldState.error.message}</span>
+                    )}
+                  </InputWrapper>
+                )}
               />
-              <InputText
-                label="Cidade"
-                required
-                style={{ minWidth: "200px" }}
+              <Controller
+                name="city"
+                control={control}
+                rules={{ required: "Cidade é um campo obrigatório" }}
+                render={({ field, fieldState }) => (
+                  <InputWrapper>
+                    <InputText
+                      label="Cidade"
+                      required
+                      style={{ minWidth: "200px" }}
+                      {...field}
+                    />
+                    {fieldState.error && (
+                      <span>{fieldState.error.message}</span>
+                    )}
+                  </InputWrapper>
+                )}
               />
-              <InputText label="UF" required style={{ width: "60px" }} />
+              <Controller
+                name="state"
+                control={control}
+                rules={{ required: "Estado é um campo obrigatório" }}
+                render={({ field, fieldState }) => (
+                  <InputWrapper>
+                    <InputText
+                      label="UF"
+                      required
+                      style={{ width: "60px" }}
+                      {...field}
+                    />
+                    {fieldState.error && (
+                      <span>{fieldState.error.message}</span>
+                    )}
+                  </InputWrapper>
+                )}
+              />
             </Row>
           </AddressArea>
         </Container>
@@ -74,26 +188,36 @@ export default function Checkout() {
               </p>
             </div>
           </Title>
-          <PaymentSelectWrapper>
-            <SelectPaymentType
-              Icon={CreditCard}
-              label="Cartão de crédito"
-              isSelected={false}
-              onClick={() => console.log("clicou cartão de crédito")}
-            />
-            <SelectPaymentType
-              Icon={Bank}
-              label="Cartão de débito"
-              isSelected={false}
-              onClick={() => console.log("clicou cartão de débito")}
-            />
-            <SelectPaymentType
-              Icon={Money}
-              label="Dinheiro"
-              isSelected={false}
-              onClick={() => console.log("clicou dinheiro")}
-            />
-          </PaymentSelectWrapper>
+          <Controller
+            name="paymentMethod"
+            control={control}
+            rules={{ required: "Selecione um metodo de pagamento" }}
+            render={({ field, fieldState }) => (
+              <InputWrapper>
+                <PaymentSelectWrapper>
+                  <SelectPaymentType
+                    Icon={CreditCard}
+                    label="Cartão de crédito"
+                    isSelected={field.value === "credit"}
+                    onClick={() => field.onChange("credit")}
+                  />
+                  <SelectPaymentType
+                    Icon={Bank}
+                    label="Cartão de débito"
+                    isSelected={field.value === "debit"}
+                    onClick={() => field.onChange("debit")}
+                  />
+                  <SelectPaymentType
+                    Icon={Money}
+                    label="Dinheiro"
+                    isSelected={field.value === "cash"}
+                    onClick={() => field.onChange("cash")}
+                  />
+                </PaymentSelectWrapper>
+                {fieldState.error && <span>{fieldState.error.message}</span>}
+              </InputWrapper>
+            )}
+          />
         </Container>
       </PaymentFormSide>
       <SummarySide>
@@ -133,7 +257,13 @@ export default function Checkout() {
               </strong>
             </SummaryItem>
           </SummaryFooter>
-          <Button variant="primary" label="Confirmar Pedido" hasIcon={false} />
+          <Button
+            type="submit"
+            variant="primary"
+            label="Confirmar Pedido"
+            hasIcon={false}
+            form="checkout-form"
+          />
         </SummaryWrapper>
       </SummarySide>
     </CheckoutContainer>
@@ -153,7 +283,7 @@ const CheckoutContainer = styled.div`
   }
 `;
 
-const PaymentFormSide = styled.div`
+const PaymentFormSide = styled.form`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -251,4 +381,16 @@ const Container = styled.div`
 const Row = styled.div`
   display: flex;
   gap: 12px;
+`;
+
+const InputWrapper = styled.div<{ hasError?: boolean }>`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  span {
+    font-size: ${({ theme }) => theme.fontSizes.textXS};
+    color: #ef4444;
+    margin-left: 2px;
+  }
 `;

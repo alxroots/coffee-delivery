@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { ReactElement } from "react";
+import { ButtonHTMLAttributes, ReactElement } from "react";
 import { VARIANTS_BUTTONS_MAPPING } from "../../utils/mappings.ts";
 import { Trash } from "@phosphor-icons/react";
 
-interface ButtonProps {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant: "primary" | "secondary";
   hasIcon: boolean;
   icon?: ReactElement;
@@ -17,17 +17,28 @@ export function Button({
   hasIcon,
   onClick,
   icon = <Trash />,
+  ...rest
 }: ButtonProps) {
   if (hasIcon) {
     return (
-      <StyledButton $variant={variant} $has_icon={hasIcon} onClick={onClick}>
+      <StyledButton
+        $variant={variant}
+        $has_icon={hasIcon}
+        onClick={onClick}
+        {...rest}
+      >
         {icon}
         {label}
       </StyledButton>
     );
   }
   return (
-    <StyledButton $variant={variant} $has_icon={hasIcon} onClick={onClick}>
+    <StyledButton
+      $variant={variant}
+      $has_icon={hasIcon}
+      onClick={onClick}
+      {...rest}
+    >
       {label}
     </StyledButton>
   );

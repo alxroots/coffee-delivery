@@ -12,7 +12,12 @@ export function InputText({
 }: InputTextProps) {
   return (
     <InputWrapper $fullwidth={fullwidth}>
-      <StyledInput type="text" placeholder={label} required={rest.required} />
+      <StyledInput
+        type="text"
+        placeholder={label}
+        required={rest.required}
+        {...rest}
+      />
       {!rest.required && <span>Opcional</span>}
     </InputWrapper>
   );
